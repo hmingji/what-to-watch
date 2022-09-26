@@ -1,25 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Fragment } from 'react';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
+import AppContainer from './components/AppContainer';
+import MovieCard from './components/MovieCard';
+import { useMovieListQuery } from './hooks/useMovieListQuery';
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <div
+        data-theme="lofi"
+        className="flex flex-col mx-auto sm:w-9/12 min-h-screen"
+      >
+        <AppContainer />
+      </div>
+      <ReactQueryDevtools
+        initialIsOpen={false}
+        position="bottom-right"
+      />
+    </QueryClientProvider>
   );
 }
 
