@@ -1,5 +1,5 @@
 export type MovieParams = {
   page?: number;
   query?: string;
-  append_to_respoense?: string;
+  append_to_response?: string;
 };

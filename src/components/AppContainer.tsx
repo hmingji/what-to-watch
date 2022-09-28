@@ -5,13 +5,15 @@ import MovieCard from './MovieCard';
 export default function AppContainer() {
   const { data } = useMovieListQuery('now_playing');
   return (
-    <div className="grid gap-2 m-2">
+    <div className="flex flex-wrap gap-5 m-2">
       {data?.pages.map((movieGroup, index) => {
         return (
           <Fragment key={index}>
             {movieGroup.results.map((movie) => (
               <MovieCard
-                movieTitle={movie.title}
+                title={movie.title}
+                id={movie.id}
+                poster_path={movie.poster_path}
                 key={movie.id}
               />
             ))}
