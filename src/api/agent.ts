@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
+import { MovieCreditResponse } from '../models/movieCredits';
 import { MovieDetailsResponse } from '../models/movieDetails';
 import {
   MovieListResponse,
@@ -11,10 +12,18 @@ axios.defaults.baseURL = process.env.REACT_APP_MOVIEAPI_URL;
 const responseBody = (response: AxiosResponse) => response.data;
 
 axios.interceptors.request.use((config) => {
-  config.params = {
-    ...config.params,
-    api_key: process.env.REACT_APP_MOVIEAPI_KEY,
-  };
+  if (
+    config.params instanceof URLSearchParams &&
+    process.env.REACT_APP_MOVIEAPI_KEY
+  ) {
+    config.params.append('api_key', process.env.REACT_APP_MOVIEAPI_KEY);
+  } else {
+    config.params = {
+      ...config.params,
+      api_key: process.env.REACT_APP_MOVIEAPI_KEY,
+    };
+  }
+
   return config;
 });
 
@@ -38,6 +47,8 @@ const MovieCatalog = {
     requests.get<MovieVideosResponse>(`movie/${movieId}/videos`),
   search: (params: URLSearchParams): Promise<MovieSearchListResponse> =>
     requests.get<MovieSearchListResponse>(`search/movie`, params),
+  credits: (movieId: number): Promise<MovieCreditResponse> =>
+    requests.get<MovieCreditResponse>(`movie/${movieId}/credits`),
 };
 
 const agent = { MovieCatalog };

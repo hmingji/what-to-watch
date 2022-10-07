@@ -1,22 +1,24 @@
 import { useInfiniteQuery } from 'react-query';
 import agent from '../api/agent';
 
-function fetchMovieList(pageParam: number, category: string) {
+function fetchMovieSearched(pageParam: number, searchTerm: string) {
   const params = new URLSearchParams();
   params.append('page', `${pageParam}`);
-  return agent.MovieCatalog.list(category, params);
+  params.append('query', searchTerm);
+  return agent.MovieCatalog.search(params);
 }
 
-export const useMovieListQuery = (category: string) => {
+export const useMovieSearchQuery = (searchTerm: string) => {
   return useInfiniteQuery(
-    ['list', category],
-    ({ pageParam = 1 }) => fetchMovieList(pageParam, category),
+    ['searchMovie', searchTerm],
+    ({ pageParam = 1 }) => fetchMovieSearched(pageParam, searchTerm),
     {
       getNextPageParam: (lastPage) => {
         if (lastPage.page < lastPage.total_pages) return lastPage.page + 1;
         return undefined;
       },
       refetchOnWindowFocus: false,
+      enabled: searchTerm ? true : false,
     }
   );
 };
