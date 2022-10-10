@@ -15,20 +15,16 @@ const listOptions = [
 
 export default function AppContainer() {
   const [list, setList] = useState('now_playing');
-  const {
-    data: listingMovies,
-    hasNextPage: listingHasNextPage,
-    fetchNextPage: listingFetchNextPage,
-  } = useMovieListQuery(list);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const isSearchOpenRef = useRef(isSearchOpen);
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
-  const {
-    data: searchMovies,
-    hasNextPage: searchHasNextPage,
-    fetchNextPage: searchFetchNextPage,
-  } = useMovieSearchQuery(debouncedSearchTerm);
+  const movieListing = useMovieListQuery(list, !isSearchOpen);
+
+  const movieSearch = useMovieSearchQuery(
+    debouncedSearchTerm,
+    isSearchOpen && searchTerm ? true : false
+  );
 
   const debounceUpdate = useCallback(
     debounce((value: string) => setDebouncedSearchTerm(value), 1000),
@@ -57,13 +53,12 @@ export default function AppContainer() {
     const onScroll = async (event: any) => {
       const { scrollHeight, scrollTop, clientHeight } =
         event.target.scrollingElement;
-
       if (!fetching && scrollHeight - scrollTop <= clientHeight * 1.5) {
         fetching = true;
-        if (listingHasNextPage && !isSearchOpenRef.current)
-          await listingFetchNextPage();
-        if (searchHasNextPage && isSearchOpenRef.current)
-          await searchFetchNextPage();
+        if (movieListing.hasNextPage && !isSearchOpenRef.current)
+          await movieListing.fetchNextPage();
+        if (movieSearch.hasNextPage && isSearchOpenRef.current)
+          await movieSearch.fetchNextPage();
         fetching = false;
       }
     };
@@ -72,7 +67,7 @@ export default function AppContainer() {
     return () => {
       document.removeEventListener('scroll', onScroll);
     };
-  }, []);
+  }, [movieListing.hasNextPage, movieSearch.hasNextPage]);
 
   return (
     <div
@@ -90,7 +85,7 @@ export default function AppContainer() {
       <div className="max-w-6xl mx-auto px-10">
         {isSearchOpen ? (
           <div className="flex flex-wrap gap-10 max-w-6xl justify-evenly mt-10">
-            {searchMovies?.pages.map((movieGroup, index) => {
+            {movieSearch.data?.pages.map((movieGroup, index) => {
               return (
                 <Fragment key={index}>
                   {movieGroup.results.map((movie) => (
@@ -109,7 +104,7 @@ export default function AppContainer() {
               <h1 className="text-white text-3xl">
                 {listOptions.find((option) => option.value === list)?.label}
               </h1>
-              <div className="flex flex-wrap gap-x-1">
+              <div className="flex flex-wrap gap-1">
                 {listOptions.map((option) => (
                   <div
                     key={option.value}
@@ -130,7 +125,7 @@ export default function AppContainer() {
             </div>
 
             <div className="flex flex-wrap gap-10 max-w-6xl justify-evenly">
-              {listingMovies?.pages.map((movieGroup, index) => {
+              {movieListing.data?.pages.map((movieGroup, index) => {
                 return (
                   <Fragment key={index}>
                     {movieGroup.results.map((movie) => (

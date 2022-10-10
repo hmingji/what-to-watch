@@ -7,16 +7,23 @@ function fetchMovieList(pageParam: number, category: string) {
   return agent.MovieCatalog.list(category, params);
 }
 
-export const useMovieListQuery = (category: string) => {
+export const useMovieListQuery = (category: string, isEnabled: boolean) => {
   return useInfiniteQuery(
     ['list', category],
     ({ pageParam = 1 }) => fetchMovieList(pageParam, category),
     {
       getNextPageParam: (lastPage) => {
-        if (lastPage.page < lastPage.total_pages) return lastPage.page + 1;
+        console.log(
+          `page: ${lastPage.page}, total pages: ${lastPage.total_pages} `
+        );
+        if (lastPage.page < lastPage.total_pages) {
+          console.log(`returning ${lastPage.page + 1}`);
+          return lastPage.page + 1;
+        }
         return undefined;
       },
       refetchOnWindowFocus: false,
+      enabled: isEnabled,
     }
   );
 };
