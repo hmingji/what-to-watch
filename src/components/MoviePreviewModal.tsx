@@ -84,7 +84,7 @@ export default function MoviePreviewModal({ movieItem, top, left }: Props) {
           `w-60 transition-all duration-150 ease-in-out z-50 rounded-md min-h-[360px]`,
           isHover && !isDetailActivated ? 'scale-125' : 'scale-100',
           isDetailActivated
-            ? 'w-4/6 min-w-[480px] bg-black m-auto mt-10 p-5'
+            ? 'w-5/6 sm:w-4/6 max-w-[1268px] m-auto mt-10 p-5 bg-[#181818] pb-20'
             : ''
         )}
         onMouseOver={() => {

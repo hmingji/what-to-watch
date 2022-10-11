@@ -41,8 +41,8 @@ export default function MovieDetailModal({ movieItem }: Props) {
           </svg>
         </button>
       </div>
-      <div className="flex flex-wrap justify-center gap-5">
-        <div className="w-[400px] flex-none mb-5">
+      <div className="flex flex-wrap justify-center gap-5 items-center">
+        <div className="max-w-[400px] xl:w-4/12 w-9/12 flex-none">
           <figure>
             <img
               src={`${process.env.REACT_APP_MOVIEIMAGEAPI_URL}w500${movieDetail?.poster_path}`}
@@ -51,7 +51,7 @@ export default function MovieDetailModal({ movieItem }: Props) {
             />
           </figure>
         </div>
-        <div className="w-[400px] flex-none my-auto text-white">
+        <div className="max-w-[400px] xl:w-4/12 w-9/12 flex-none my-auto text-white">
           <h1 className="text-2xl mb-2">{movieDetail?.title}</h1>
           <p className=" text-base mb-2">{movieDetail?.tagline}</p>
           <p>{`Status: ${movieDetail?.status.toUpperCase()}`}</p>
@@ -69,22 +69,28 @@ export default function MovieDetailModal({ movieItem }: Props) {
         </div>
       </div>
       <div className="flex flex-wrap gap-5 justify-center mt-5">
-        <div className="text-white border p-2 rounded-md">
+        <div className="text-white border p-2 rounded-md max-w-[400px] xl:w-4/12 w-9/12">
           <h1 className="text-2xl mb-2">Related Videos</h1>
-          <div className="w-[380px] h-[700px] overflow-auto">
+          <div className="w-full h-[700px] overflow-auto">
             {ytMovieVideo?.map((video) => (
-              <ReactPlayer
+              <div
                 key={video.key}
-                url={`https://www.youtube.com/watch?v=${video.key}`}
-                width="360px"
-                controls
-              />
+                className="w-full aspect-video mb-2"
+              >
+                <ReactPlayer
+                  key={video.key}
+                  url={`https://www.youtube.com/watch?v=${video.key}`}
+                  width="100%"
+                  height="100%"
+                  controls
+                />
+              </div>
             ))}
           </div>
         </div>
-        <div className="text-white border p-2 rounded-md">
+        <div className="text-white border p-2 rounded-md max-w-[400px] xl:w-4/12 w-9/12">
           <h1 className="text-2xl mb-2">Casts</h1>
-          <div className="w-[380px] h-[700px] overflow-auto">
+          <div className="w-full h-[700px] overflow-auto">
             {movieCredit?.cast.map((cast) => (
               <li
                 key={cast.cast_id}
@@ -110,7 +116,7 @@ export default function MovieDetailModal({ movieItem }: Props) {
                     </svg>
                   </div>
                 )}
-                <p>{cast.name}</p>
+                <p className="pl-1">{cast.name}</p>
               </li>
             ))}
           </div>
