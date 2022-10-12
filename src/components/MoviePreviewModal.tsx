@@ -12,7 +12,6 @@ import MovieDetailModal from './MovieDetailModal';
 
 interface Props {
   movieItem: MovieListItem;
-  //poster_path: string;
   top: number;
   left: number;
 }
@@ -58,9 +57,7 @@ export default function MoviePreviewModal({ movieItem, top, left }: Props) {
     debounce(handleMouseOver, 3000),
     []
   );
-  console.log(
-    `render preview modal with props => movieItem: ${movieItem}, top: ${top}, left: ${left}`
-  );
+
   return (
     <div
       className={classNames(
@@ -81,10 +78,10 @@ export default function MoviePreviewModal({ movieItem, top, left }: Props) {
       <div
         id={`preview-${movieItem.id}`}
         className={classNames(
-          `w-60 transition-all duration-150 ease-in-out z-50 rounded-md min-h-[360px]`,
+          `w-60 transition-all duration-150 ease-in-out z-50 rounded-md h-[360px]`,
           isHover && !isDetailActivated ? 'scale-125' : 'scale-100',
           isDetailActivated
-            ? 'w-5/6 sm:w-4/6 max-w-[1268px] m-auto mt-10 p-5 bg-[#181818] pb-20'
+            ? 'w-5/6 sm:w-4/6 max-w-[1268px] m-auto mt-10 p-5 bg-[#181818] pb-20 h-full'
             : ''
         )}
         onMouseOver={() => {
@@ -99,12 +96,20 @@ export default function MoviePreviewModal({ movieItem, top, left }: Props) {
       >
         {!isDetailActivated ? (
           <>
-            <figure>
-              <img
-                src={`${process.env.REACT_APP_MOVIEIMAGEAPI_URL}w500${movieItem.poster_path}`}
-                alt={movieItem.title}
-              />
-            </figure>
+            {movieItem.poster_path ? (
+              <figure>
+                <img
+                  src={`${process.env.REACT_APP_MOVIEIMAGEAPI_URL}w500${movieItem.poster_path}`}
+                  alt={movieItem.title}
+                />
+              </figure>
+            ) : (
+              <div className="bg-slate-700 w-full h-full p-2">
+                <p className="text-white text-center my-10">
+                  {movieItem.title}
+                </p>
+              </div>
+            )}
             <div
               className={classNames(
                 'absolute inset-x-0 bottom-0 h-[360px] pt-[240px] px-2 transition-all duration-1000 ease-in-out delay-[2000ms] bg-gradient-to-t from-black',

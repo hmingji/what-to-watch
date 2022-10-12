@@ -3,6 +3,7 @@ import debounce from 'lodash.debounce';
 import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import { useMovieListQuery } from '../hooks/useMovieListQuery';
 import { useMovieSearchQuery } from '../hooks/useMovieSearchQuery';
+import { useAppSelector } from '../store/configureStore';
 import Header from './Header';
 import MovieCard from './MovieCard';
 
@@ -15,11 +16,15 @@ const listOptions = [
 
 export default function AppContainer() {
   const [list, setList] = useState('now_playing');
+  const { isDetailActivated } = useAppSelector((state) => state.app);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const isSearchOpenRef = useRef(isSearchOpen);
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
-  const movieListing = useMovieListQuery(list, !isSearchOpen);
+  const movieListing = useMovieListQuery(
+    list,
+    !isSearchOpen && !isDetailActivated
+  );
 
   const movieSearch = useMovieSearchQuery(
     debouncedSearchTerm,

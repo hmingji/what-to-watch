@@ -1,6 +1,12 @@
 import classNames from 'classnames';
 import { useCallback, useRef } from 'react';
-import { setPreview, setLeft, setTop, setMovie } from '../slice/appSlice';
+import {
+  setPreview,
+  setLeft,
+  setTop,
+  setMovie,
+  setDetail,
+} from '../slice/appSlice';
 import { useAppDispatch, useAppSelector } from '../store/configureStore';
 import debounce from 'lodash.debounce';
 import { MovieListItem } from '../models/movieList';
@@ -11,6 +17,7 @@ interface Props {
 }
 
 export default function MovieCard({ movieItem, poster_size = 'w500' }: Props) {
+  const isTouch = 'ontouchstart' in window;
   const { isPreviewActivated } = useAppSelector((state) => state.app);
   const dispatch = useAppDispatch();
 
@@ -26,7 +33,6 @@ export default function MovieCard({ movieItem, poster_size = 'w500' }: Props) {
       );
       dispatch(setPreview(true));
       dispatch(setMovie(movieItem));
-      console.log('debounced completed');
     }
   };
 
@@ -39,19 +45,29 @@ export default function MovieCard({ movieItem, poster_size = 'w500' }: Props) {
     <div
       ref={ref}
       onMouseOver={() => {
-        debouncedHandleMouseOver();
+        if (!isTouch) debouncedHandleMouseOver();
       }}
       onMouseLeave={() => {
-        debouncedHandleMouseOver.cancel();
+        if (!isTouch) debouncedHandleMouseOver.cancel();
       }}
-      className={classNames('w-60 z-[5]')}
+      onClick={() => {
+        dispatch(setMovie(movieItem));
+        dispatch(setDetail(true));
+      }}
+      className={classNames('w-60 z-[5] h-[360px]')}
     >
-      <figure>
-        <img
-          src={`${process.env.REACT_APP_MOVIEIMAGEAPI_URL}${poster_size}/${movieItem.poster_path}`}
-          alt={movieItem.title}
-        />
-      </figure>
+      {movieItem.poster_path ? (
+        <figure>
+          <img
+            src={`${process.env.REACT_APP_MOVIEIMAGEAPI_URL}${poster_size}${movieItem.poster_path}`}
+            alt={movieItem.poster_path}
+          />
+        </figure>
+      ) : (
+        <div className="bg-slate-700 w-full h-full p-2">
+          <p className="text-white text-center my-10">{movieItem.title}</p>
+        </div>
+      )}
     </div>
   );
 }

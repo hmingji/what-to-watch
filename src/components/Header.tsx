@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { FaSearch, FaVolumeMute, FaVolumeUp } from 'react-icons/fa';
 import { MdClose } from 'react-icons/md';
 import { setMuted } from '../slice/appSlice';
@@ -18,6 +19,7 @@ export default function Header({
   handleSearchClose,
   updateSearchOnChange,
 }: Props) {
+  const isTouch = 'ontouchstart' in window;
   const { isPreviewMuted } = useAppSelector((state) => state.app);
   const dispatch = useAppDispatch();
 
@@ -26,12 +28,17 @@ export default function Header({
   }
 
   return (
-    <div className="w-full py-5 flex flex-wrap border-b-2 max-w-6xl mx-auto px-2 justify-between items-center">
-      <h1 className="text-primary text-md font-semibold">
+    <div className="w-full py-5 flex flex-wrap border-b-2 max-w-6xl mx-auto px-2 sm:justify-between justify-center items-center">
+      <h1
+        className={classNames(
+          'text-primary text-md font-semibold mr-5',
+          isSearchOpen ? 'hidden sm:block' : ''
+        )}
+      >
         whatToWatch(movies);
       </h1>
 
-      <div className="flex flex-wrap gap-4 items-center">
+      <div className="flex flex-wrap gap-4 items-center z-50">
         {isSearchOpen ? (
           <div className="flex gap-2 items-center">
             <input
@@ -59,27 +66,28 @@ export default function Header({
           </div>
         )}
 
-        {isPreviewMuted ? (
-          <div
-            className="tooltip tooltip-bottom"
-            data-tip="Unmute Preview"
-          >
-            <FaVolumeMute
-              color="white"
-              onClick={handleVolumeOnClick}
-            />
-          </div>
-        ) : (
-          <div
-            className="tooltip tooltip-bottom"
-            data-tip="Mute Preview"
-          >
-            <FaVolumeUp
-              color="white"
-              onClick={handleVolumeOnClick}
-            />
-          </div>
-        )}
+        {!isTouch &&
+          (isPreviewMuted ? (
+            <div
+              className="tooltip tooltip-bottom"
+              data-tip="Unmute Preview"
+            >
+              <FaVolumeMute
+                color="white"
+                onClick={handleVolumeOnClick}
+              />
+            </div>
+          ) : (
+            <div
+              className="tooltip tooltip-bottom"
+              data-tip="Mute Preview"
+            >
+              <FaVolumeUp
+                color="white"
+                onClick={handleVolumeOnClick}
+              />
+            </div>
+          ))}
 
         <div>
           <a
