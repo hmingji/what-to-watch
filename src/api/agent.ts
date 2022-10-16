@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 import { MovieCreditResponse } from '../models/movieCredits';
 import { MovieDetailsResponse } from '../models/movieDetails';
 import {
@@ -29,7 +29,13 @@ axios.interceptors.request.use((config) => {
 
 const requests = {
   get: <ResType>(url: string, params?: URLSearchParams) =>
-    axios.get<ResType>(url, { params }).then(responseBody),
+    axios
+      .get<ResType>(url, { params })
+      .then(responseBody)
+      .catch((error: AxiosError) => {
+        throw error;
+        console.log(error);
+      }),
 };
 
 const MovieCatalog = {
