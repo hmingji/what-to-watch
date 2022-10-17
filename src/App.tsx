@@ -1,24 +1,19 @@
 import debounce from 'lodash.debounce';
 import { useCallback, useEffect, useState } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import AppContainer from './components/AppContainer';
-import ErrorBoundary from './components/ErrorBoundary';
-import Header from './components/Header';
-import MovieListing from './components/MovieListing';
-import MoviePreviewModal from './components/MoviePreviewModal';
-import MovieSearchListing from './components/MovieSearchListing';
+import AppContainer from './layout/AppContainer';
+import ErrorBoundary from './layout/ErrorBoundary';
+import Header from './layout/Header';
+import MovieListing from './components/MovieListing/MovieListing';
+import MovieModal from './components/MovieModal/MovieModal';
+import MovieSearchListing from './components/MovieListing/MovieSearchListing';
 import { useAppSelector } from './store/configureStore';
 
 const queryClient = new QueryClient();
 
 function App() {
-  const {
-    isPreviewActivated,
-    hoveredCardLeft,
-    hoveredCardTop,
-    hoveredMovie,
-    isDetailActivated,
-  } = useAppSelector((state) => state.app);
+  const { isPreviewActivated, hoveredMovie, isDetailActivated } =
+    useAppSelector((state) => state.app);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
@@ -73,11 +68,7 @@ function App() {
         </AppContainer>
 
         {(isPreviewActivated || isDetailActivated) && hoveredMovie && (
-          <MoviePreviewModal
-            movieItem={hoveredMovie}
-            top={hoveredCardTop}
-            left={hoveredCardLeft}
-          />
+          <MovieModal movieItem={hoveredMovie} />
         )}
       </div>
     </QueryClientProvider>

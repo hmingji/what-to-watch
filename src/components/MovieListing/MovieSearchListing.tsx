@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import { AiOutlineLoading } from 'react-icons/ai';
-import useInfiniteScroll from '../hooks/useInfiniteScroll';
-import { useMovieSearchQuery } from '../hooks/useMovieSearchQuery';
+import useInfiniteScroll from '../../hooks/useInfiniteScroll';
+import { useMovieSearchQuery } from '../../hooks/useMovieSearchQuery';
 import MovieCard from './MovieCard';
 
 interface Props {

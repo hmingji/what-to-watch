@@ -6,10 +6,10 @@ import {
   setTop,
   setMovie,
   setDetail,
-} from '../slice/appSlice';
-import { useAppDispatch, useAppSelector } from '../store/configureStore';
+} from '../../slice/appSlice';
+import { useAppDispatch, useAppSelector } from '../../store/configureStore';
 import debounce from 'lodash.debounce';
-import { MovieListItem } from '../models/movieList';
+import { MovieListItem } from '../../models/movieList';
 
 interface Props {
   poster_size?: string;

@@ -1,16 +1,16 @@
 import ReactPlayer from 'react-player';
-import { useMovieCreditQuery } from '../hooks/useMovieCreditQuery';
-import { useMovieDetailQuery } from '../hooks/useMovieDetailQuery';
-import { useMovieVideoQuery } from '../hooks/useMovieVideoQuery';
-import { MovieListItem } from '../models/movieList';
-import { setDetail } from '../slice/appSlice';
-import { useAppDispatch } from '../store/configureStore';
+import { useMovieCreditQuery } from '../../hooks/useMovieCreditQuery';
+import { useMovieDetailQuery } from '../../hooks/useMovieDetailQuery';
+import { useMovieVideoQuery } from '../../hooks/useMovieVideoQuery';
+import { MovieListItem } from '../../models/movieList';
+import { setDetail, setPreview } from '../../slice/appSlice';
+import { useAppDispatch } from '../../store/configureStore';
 
 interface Props {
   movieItem: MovieListItem;
 }
 
-export default function MovieDetailModal({ movieItem }: Props) {
+export default function MovieModalDetailContent({ movieItem }: Props) {
   const { data: movieDetail } = useMovieDetailQuery(movieItem.id, true);
   const { data: movieVideo } = useMovieVideoQuery(movieItem.id, true);
   const { data: movieCredit } = useMovieCreditQuery(movieItem.id, true);
@@ -24,7 +24,10 @@ export default function MovieDetailModal({ movieItem }: Props) {
       <div className="w-full flex flex-row-reverse mb-5">
         <button
           className="btn btn-circle"
-          onClick={() => dispatch(setDetail(false))}
+          onClick={() => {
+            dispatch(setDetail(false));
+            dispatch(setPreview(false));
+          }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

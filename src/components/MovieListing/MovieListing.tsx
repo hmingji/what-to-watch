@@ -1,11 +1,11 @@
 import classNames from 'classnames';
 import { Fragment, useState } from 'react';
-import useInfiniteScroll from '../hooks/useInfiniteScroll';
-import { useMovieListQuery } from '../hooks/useMovieListQuery';
-import { useAppSelector } from '../store/configureStore';
+import useInfiniteScroll from '../../hooks/useInfiniteScroll';
+import { useMovieListQuery } from '../../hooks/useMovieListQuery';
+import { useAppSelector } from '../../store/configureStore';
 import MovieCard from './MovieCard';
 import { AiOutlineLoading } from 'react-icons/ai';
-import ErrorBoundary from './ErrorBoundary';
+import ErrorBoundary from '../../layout/ErrorBoundary';
 
 const listingCategoryOptions = [
   { label: 'Now Playing', value: 'now_playing' },
