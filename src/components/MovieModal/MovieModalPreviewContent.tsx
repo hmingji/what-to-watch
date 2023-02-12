@@ -26,18 +26,14 @@ export default function MovieModalPreviewContent({ movieItem }: Props) {
     (video) => video.site === 'YouTube'
   );
 
-  const handleMouseOver = () => {
-    setPlaying(true);
-  };
-
-  const debouncedHandleMouseOver = useCallback(
-    debounce(handleMouseOver, 3000),
+  const debouncedSetPlaying = useCallback(
+    debounce(() => setPlaying(true), 3000),
     []
   );
 
   useEffect(() => {
-    debouncedHandleMouseOver();
-    return () => debouncedHandleMouseOver.cancel();
+    debouncedSetPlaying();
+    return () => debouncedSetPlaying.cancel();
   }, []);
 
   return (
