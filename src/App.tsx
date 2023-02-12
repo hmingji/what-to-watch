@@ -48,6 +48,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <div data-theme="night">
+        <div>For testing:</div>
         <DataFetchResultCard />
         {/* <AppContainer>
           <Header
