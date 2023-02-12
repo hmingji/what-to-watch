@@ -11,23 +11,23 @@ axios.defaults.baseURL = process.env.REACT_APP_MOVIEAPI_URL;
 
 const responseBody = (response: AxiosResponse) => response.data;
 
-axios.interceptors.request.use((config) => {
-  if (
-    config.params instanceof URLSearchParams &&
-    process.env.REACT_APP_MOVIEAPI_KEY
-  ) {
-    config.params.append('api_key', process.env.REACT_APP_MOVIEAPI_KEY);
-  } else {
-    config.params = {
-      ...config.params,
-      api_key: process.env.REACT_APP_MOVIEAPI_KEY,
-    };
-  }
+// axios.interceptors.request.use((config) => {
+//   if (
+//     config.params instanceof URLSearchParams &&
+//     process.env.REACT_APP_MOVIEAPI_KEY
+//   ) {
+//     config.params.append('api_key', process.env.REACT_APP_MOVIEAPI_KEY);
+//   } else {
+//     config.params = {
+//       ...config.params,
+//       api_key: process.env.REACT_APP_MOVIEAPI_KEY,
+//     };
+//   }
 
-  return config;
-});
+//   return config;
+// });
 
-const requests = {
+export const requests = {
   get: <ResType>(url: string, params?: URLSearchParams) =>
     axios
       .get<ResType>(url, { params })

@@ -8,6 +8,7 @@ import MovieListing from './components/MovieListing/MovieListing';
 import MovieModal from './components/MovieModal/MovieModal';
 import MovieSearchListing from './components/MovieListing/MovieSearchListing';
 import { useAppSelector } from './store/configureStore';
+import DataFetchResultCard from './components/dummy/DataFetchResultCard';
 
 const queryClient = new QueryClient();
 
@@ -47,7 +48,8 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <div data-theme="night">
-        <AppContainer>
+        <DataFetchResultCard />
+        {/* <AppContainer>
           <Header
             isSearchOpen={isSearchOpen}
             searchTerm={searchTerm}
@@ -69,7 +71,7 @@ function App() {
 
         {(isPreviewActivated || isDetailActivated) && hoveredMovie && (
           <MovieModal movieItem={hoveredMovie} />
-        )}
+        )} */}
       </div>
     </QueryClientProvider>
   );
