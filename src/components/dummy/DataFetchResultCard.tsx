@@ -8,7 +8,8 @@ export default function DataFetchResultCard() {
   params.append('State', 'Malaysia');
   const { data, isSuccess } = useQuery(
     'test-query',
-    () => requests.get('Record/donation/yearly/daily', params),
+    //() => requests.get('Record/donation/yearly/daily', params),
+    () => requests.get(''),
     { staleTime: twentyFourHoursInMs }
   );
 
