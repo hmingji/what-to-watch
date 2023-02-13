@@ -13,7 +13,7 @@ export default function DataFetchResultCard() {
     { staleTime: twentyFourHoursInMs }
   );
 
-  if (isSuccess) return <div className="w-20">{data}</div>;
+  if (isSuccess) return <div className="w-20">{String(data)}</div>;
 
   return <div>loading</div>;
 }
